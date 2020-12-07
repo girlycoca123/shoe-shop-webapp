@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-5 pt-5">
+    <h1 class="h2">Products</h1>
+    <a href="/admin/product/adding-new-product" class="btn btn-primary" role="button">Add new product</a>
+</div>
+<hr>
+
+<div class="tab-content mt-5" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-male" role="tabpanel" aria-labelledby="nav-home-tab">
+        <table class="table" style="margin-top:10px ;">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Stock</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% for (i=0; i < product.length ; i++) { %>
+                    <tr>
+                        <td>
+                            <img src='/image/<%= product[i].image %>' class="thumbnail" height="100px">
+                        </td>
+                        <td>
+                            <%= product[i].name %>
+                        </td>
+                        <td>
+                            <%= product[i].size %>
+                        </td>
+                        <td>
+                            <%= product[i].color %>
+                        </td>
+                        <td>
+                            <%= product[i].price %>
+                        </td>
+                        <td>
+                            <%= product[i].stock %>
+                        </td>
+                        <td>
+                            <%= product[i].brand %>
+                        </td>
+                        <td>
+
+                            <a role="button" class="btn btn-success" href="/admin/product/updating-product-details/<%= product[i]._id %>" style="margin: 5%;">
+                                <i class="fas fa-edit px-1"></i>Update
+                            </a>
+                            <a><form action="/product/<%=product[i]._id%>/remove" method="POST"><button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#">
+                    <i class="fas fa-trash px-1"></i>Delete
+                  </button></form></a>
+                        </td>
+                    </tr>
+
+                    <% } %>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>

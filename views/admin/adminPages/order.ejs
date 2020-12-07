@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom mt-5 pt-5">
+    <h1 class="h2">Orders</h1>
+</div>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Order Id</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Total Payment</th>
+            <th scope="col">Size</th>
+            <th scope="col">brand</th>
+            <th scope="col">Color</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (var i=0;i<orders.length;i++){ %>
+            <tr>
+                <td>
+                    <%= orders[i]._id %>
+                </td>
+                <td>
+                    <%= orders[i].product.name %>
+                </td>
+                <td>
+                    <%= orders[i].total %>
+                </td>
+                <td>
+                    <%= orders[i].size %>
+                </td>
+                <td>
+                    <%= orders[i].product.brand %>
+                </td>
+                <td>
+                    <%= orders[i].color %>
+                </td>
+                <td>
+                    <%=orders[i].status %>
+                </td>
+            </tr>
+            <% } %>
+
+    </tbody>
+</table>

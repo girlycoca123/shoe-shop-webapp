@@ -1,0 +1,84 @@
+<div class="container mt-5 pt-5">
+    <div class="row" style="margin-top: 5%;">
+        <div class="col">
+            <div class="card">
+                <img class="card-img" src="/image/<%= image %>" style="height: 350px;max-height: 350px" alt="<%= product.name %>">
+            </div>
+        </div>
+        <div class="col">
+            <div class="card" style="height: 350px;max-height: 500px">
+                <div class="card-body">
+                    <div class="col">
+                        <h4 class="card-title text-center">
+                            <%= product.name %>
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-subtitle mb-2 my-3 text-muted">brand:
+                            <%= product.brand %>
+                        </h6>
+                    </div>
+                    <div class="col">
+
+                        <p class="card-text my-3 ">
+                            <%= product.description %>
+                        </p>
+                    </div>
+                    <div class="options d-flex flex-fill ">
+                        <div class="col-4">
+                            <label for="color">Color : </label>
+                            <select id="color" class="custom-select mr-1">
+                                <% for (i=0; i < product.color.length ; i++) { %>
+                                <option value="<%= product.color[i] %>">
+                                    <%= product.color[i] %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+
+                        <div class="col-4">
+                            <label for="size">Size : </label>
+                            <select id="size" class="custom-select ml-1">
+                                <% for (i=0; i < product.size.length ; i++) { %>
+                                <option value="<%= product.size[i] %>">
+                                    <%= product.size[i] %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Quantity : </label>
+                                <input type="number" value="1" class="form-control" id="quantity" placeholder="Quantity">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="buy d-flex justify-content-between align-items-center">
+                            <div class="price">
+                                <h5 class="mt-1">
+                                    Price : PHP
+                                    <span id="item-price">
+                                        <%= product.price %>
+                                    </span>
+                                </h5>
+                                <div class="total">
+                                    <h5 class="mt-1">
+                                        Total : PHP
+                                        <span id="item-total"><%= product.price %></span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col ">
+                            <button class="btn btn-danger float-right" id="addtocartbtn" data-toggle="tooltip" title="View Cart">
+                                <i class="fa fa-shopping-basket   font-weight-bold" aria-hidden="true"></i>Add To Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-none">
+            <input type="text" value="<%= product._id %>" id="productId">
+        </div>

@@ -1,0 +1,96 @@
+<div class="container mt-5 pt-5">
+    <table class="table table-bordered " style="margin-top: 3%;">
+        <thead>
+            <tr class="text-center">
+                <th width="15%">Image</th>
+                <th width="20%">Name</th>
+                <th width="20%">Price</th>
+                <th width="10%">Quantity</th>
+                <th width="10%">Size</th>
+                <th width="20%">Total</th>
+                <th width="25%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i=0;i<results.length;i++){ %>
+                <tr class="text-center" style="opacity:0.8">
+                    <td>
+                        <img src="/image/<%= JSON.parse(JSON.stringify(results[i].product)).image %>" alt="<%= results[i].product.name  %> " class="thumbnail" height="100px">
+                    </td>
+                    <td>
+                        <%=results[i].product.name%>
+                    </td>
+                    <td>
+                        <%=results[i].product.price%>
+                    </td>
+                    <td>
+                        <%=results[i].quantity%>
+                    </td>
+                    <td>
+                        <%=results[i].size%>
+                    </td>
+                    <td>
+                        <%=results[i].total%>
+                    </td>
+                    <td>
+                        <% if(results[i].status== 'Pending') { %>
+                            <button class="btn btn-primary updateBtn" item="<%= JSON.stringify(results[i])%>" style="margin: 5%; width: 75px;">Update</button>
+                            <button class="btn btn-danger deleteBtn" item="<%= JSON.stringify(results[i])%>" style="width: 75px;">Delete</button>
+                            <% } else { %>
+                                <p class="btn btn-success"> Ordered </p>
+                                <% } %>
+                    </td>
+                </tr>
+                <% } %>
+        </tbody>
+
+    </table>
+    <button type="button" class="btn btn-danger float-right placeOrder" style=" margin-bottom: 10%;">Place Order</button>
+
+</div>
+
+
+<!-- modal -->
+<div class="modal fade updateModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Item Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body item-details">
+                <!-- container -->
+                <p id="item_name"></p>
+                <img id="item_image" src="" width="450" height="auto" alt="photo"> Price:
+                <p id="item_price"></p>
+
+                Total:
+                <p id="item_total"></p>
+
+
+
+                <div class="options d-flex flex-fill ">
+                    <div class="col-4">
+                        <label for="size">Size : </label>
+                        <select id="updatedSize" class="custom-select ml-1">
+                            
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Quantity : </label>
+                            <input type="number" value="1" class="form-control" id="updatedQuantity" placeholder="Quantity">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary postUpdate">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal -->

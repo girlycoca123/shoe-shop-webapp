@@ -1,0 +1,145 @@
+<!--Carousel Wrapper-->
+<div id="demo" class="carousel slide" data-ride="carousel">
+    <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+    </ul>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/image/slide1.png" alt="Los Angeles" width="100%" height="598px">
+        </div>
+        <div class="carousel-item">
+            <img src="/image/slide2.png" alt="Chicago" width="100%" height="10%">
+        </div>
+        <div class="carousel-item">
+            <img src="/image/slide3.png" alt="New York" width="100%" height="100%">
+        </div>
+    </div>
+</div>
+<br><br><br>
+<h5 class="text-center intro">It started with a simple idea: Create quality,well- designed products that I wanted myself
+</h5>
+<br><br> <br>
+
+<div class="container">
+    <div class="row" style="font-size: 30px;">
+        <div class="col-md-5">
+            <div class="thumbnail">
+                <img src="/image/image6.jpg" alt="Lights">
+                </a>
+            </div>
+            <h5 class="text-center"><em> Doll Shoes</em></h5><br>
+            <br>
+        </div>
+        <div class="col-md-5">
+            <div class="thumbnail">
+                <img src="/image/image7.jpg">
+                </a>
+            </div>
+            <h5 class="text-center"><em> Rubber Shoes</em></h5><br>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+<p class="text-center font-weight-bold" style="font-size: 30px;">H I G H L I G H T S</p>
+<div class=" container-fluid fluid">
+    <div class="row px-2">
+        <% for(var i=0; i < JSON.parse(data).length; i++) { %>
+            <div class="col-3 mt-5">
+                <div class="gallery">
+                    <div class="thumbnail">
+                        <img src="/image/<%=JSON.parse(data)[i].image%>" width="600" height="400">
+                    </div>
+
+                    <div class="desc">
+                        <%= JSON.parse(data)[i].brand %>
+                    </div>
+
+                    <hr>
+                    <div class="my-2 mx-2 text-center">
+                        <button class="btn btn-sm detailBtn" item="<%= JSON.stringify(JSON.parse(data)[i]) %>">View
+                        Details</button>
+                        <a href="/user/order/<%=JSON.parse(data)[i]._id%>"><button class="btn btn-sm addToCardBtn"
+                            item="<%= JSON.stringify(JSON.parse(data)[i]) %>">Add to Cart</button></a>
+                        <a href="/auth/registration" type="button" class="btn btn-sm registerBtn">Sign up to
+                        Continue</a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Item Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body item-details">
+                <!-- container -->
+                <p id="itemName"></p>
+                <img id="itemImage" src="" width="450" height="auto" alt="photo">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal -->
+
+<div class="container mt-3 ">
+    <div class="page-container py-2">
+        <% if (pages > 0) { %>
+            <nav>
+                <ul class="pagination">
+                    <!-- prev button -->
+                    <% if (current == 1) { %>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">prev</a>
+                        </li>
+                        <% } else { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/<%= current-1 %>" tabindex="-1">prev</a>
+                            </li>
+                            <% } %>
+
+                                <% for (i=1; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                    <% if (i == current) { %>
+                                        <li class="page-item active">
+
+                                            <p class="page-link">
+                                                <%= i %>
+                                            </p>
+                                        </li>
+                                        <% } else { %>
+                                            <li class="page-item">
+                                                <a class="page-link" href="/<%= i %>">
+                                                    <%= i %>
+                                                        </span>
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                                <% } %>
+                                                    <% if (current == pages) { %>
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#">next</a>
+                                                        </li>
+                                                        <% } else { %>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="/<%= Number(current)+Number(1) %>">next</a>
+                                                            </li>
+                                                            <% } %>
+
+                </ul>
+            </nav>
+            <% } %>
+    </div>
+</div>

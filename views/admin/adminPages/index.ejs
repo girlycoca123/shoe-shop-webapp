@@ -1,0 +1,50 @@
+<div class="mt-5 pt-5">
+    <canvas id="horizontalBar"></canvas>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+    $.ajax({
+        type: "GET",
+        url: "/api/products/dashboard/analytics",
+        success: function(result) {
+            console.log(result)
+            var arr = [
+                result.result["5fc9f5ac6f69ef10dc682197"],
+                result.result["5fc9f6b16f69ef10dc682198"],
+                result.result["5fc9f85a6f69ef10dc68219b"],
+                result.result["5fc9f9296f69ef10dc68219c"],
+                result.result["5fc9fa8c6f69ef10dc68219e"],
+                result.result["5fc9fc1f6f69ef10dc6821a6"],
+                result.result["5fca24219f6de9136096966e"]
+            ];
+            new Chart(document.getElementById("horizontalBar"), {
+                "type": "horizontalBar",
+                "data": {
+                    "labels": ["Nike", "Adidas", "Puma", "Fila", "Vans", "Converse", "Under Armour"],
+                    "datasets": [{
+                        "label": "Shoe Shop",
+                        "data": arr,
+                        "fill": false,
+                        "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
+                            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
+                        ],
+                        "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
+                            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
+                        ],
+                        "borderWidth": 1
+                    }]
+                },
+                "options": {
+                    "scales": {
+                        "xAxes": [{
+                            "ticks": {
+                                "beginAtZero": true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+    });
+</script>

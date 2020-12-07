@@ -1,0 +1,80 @@
+<div class=" mt-5 pt-5 ">
+    <h1 class="h2">Update Product</h1>
+    <hr>
+</div>
+
+<form action="/product/<%=id._id%>/update" method="POST" enctype="multipart/form-data">
+    <div class="container  font-weight-bold">
+        <div class="center_div">
+
+            <label for="name">Image</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                </div>
+                <div class="custom-file form-group col-md-6">
+                    <input type="file" accept="image/*" value="<%= id.image %>" name="image" class="custom-file-input" id="file">
+                    <label class="custom-file-label" for="inputGroupFile01" id="labelprofile"></label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2 font-weight-bold">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" value="<%= id.name %>" id="name" name="name">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" value="<%= id.price %>" id="price" name="price">
+                </div>
+
+
+                <div class="form-group col-md-2">
+                    <label for="brand">Brand</label>
+                    <select class="custom-select" id="brand" name="brand" value="<%= id.brand %>">
+                      <option selected>Nike</option>
+                      <option value="Adidas">Adidas</option>
+                      <option value="Puma">Puma</option>
+                      <option value="Fila">Fila</option>
+                      <option value="Vans">Vans</option>
+                      <option value="Converse">Converse</option>
+                      <option value="Under Armour">Under Armour</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="available-color">Available Colors</label>
+                    <select class="custom-select" id="available-color" value="<%= id.color %>" name="color">
+                        <option selected>Red</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Purple">Purple</option>
+                        <option value="White">White</option>
+                        <option value="Black">Black</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group col-md-2">
+                    <label for="available-size">Available Sizes</label>
+                    <select class="custom-select" id="available-size" value="<%= id.size %>" name="size">
+                        <option selected>S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                    </select>
+                </div>
+
+                <div class="form-group  col-md-2">
+                    <label for="stock">Total Stock</label>
+                    <input type="text" class="form-control" id="stock" value="<%= id.stock %>" name="stock">
+                </div>
+            </div>
+            <button type="submit" href="" class="btn btn-success" role="button" style="margin-left: 43%;">Update Product</button>
+        </div>
+</form>
+
+</div>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%- title %>
+    </title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap/icons/css/font-awesome.min.css">
+    <script src="/js/bootstrap/jquery.min.js"></script>
+    <script src="/js/bootstrap/popper.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <%- include('./../includes/header'); %>
+            <main class="main">
+                <%- body %>
+                    <%- include('./../includes/loading'); %>
+            </main>
+            <%- include('./../includes/footer'); %>
+    </div>
+    <script>
+        const toggleLoading = (show) => {
+            if (show) {
+                $(".spanner").addClass("show");
+                $(".overlay").addClass("show");
+            } else {
+
+                $(".spanner").removeClass("show");
+                $(".overlay").removeClass("show");
+            }
+        }
+        $(document).ready(() => {
+            if (localStorage.getItem("token")) {
+                $(".addToCardBtn").show()
+                $(".registerBtn").hide()
+                $(".logout").show()
+                $(".auth_btns").hide()
+            } else {
+                $(".addToCardBtn").hide()
+                $(".registerBtn").show()
+                $(".logout").hide()
+                $(".auth_btns").show()
+            }
+
+            $(document).on('click', '.detailBtn', (event) => {
+                let item = JSON.parse($(event.target).attr('item'));
+                $("#itemName").text(item.name)
+                $("#itemImage").attr('src', "/image/" + item.image)
+                $('.modal').modal('toggle')
+            })
+
+            $(document).on('click', '.updateBtn', (event) => {
+                let item = JSON.parse($(event.target).attr('item'));
+                $("#itemName").text(item.name)
+                $(".postUpdate").attr('id', item._id)
+                $("#itemImage").attr('src', '/image/ ' + item.image)
+                item.product.size.forEach(size => {
+                    $("#updatedSize").append(
+                        `<option value="${size}">${size}</option>`
+                    )
+                })
+                $('.updateModal').modal('toggle')
+            })
+
+            $(document).on('click', '.updateBtn', (event) => {
+                let item = JSON.parse($(event.target).attr('item'));
+                console.log(item)
+                $("#item_name").text(item.product.name)
+                $("#item_image").attr('src', "/image/" + item.product.image)
+                $("#item_price").text(item.product.price)
+                $("#item_quantity").text(item.quantity)
+                $("#item_size").text(item.product.size)
+                $("#item_total").text(item.total)
+                $('.modal').modal('toggle')
+            })
+
+
+            $(document).on("click", '.deleteBtn', (e) => {
+                let item = JSON.parse($(event.target).attr('item'));
+                console.log(item._id)
+                $.ajax({
+                    url: "/api/products/delete/" + item._id,
+                    type: "post",
+                    data: {},
+                    success: (res) => {
+                        console.log("deleted");
+                        window.location.href = "/api/orders/view/" + JSON.parse(localStorage.getItem("user")).profile._id;
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    }
+                })
+
+
+            })
+
+            $(document).on('click', '.placeOrder', (event) => {
+                let customer = JSON.parse(localStorage.getItem('user')).profile._id
+                $.ajax({
+                        url: '/api/products/order/place',
+                        method: 'Post',
+                        data: {
+                            customer
+                        },
+                    })
+                    .then(res => {
+                        // success saving
+                        location.href = "/"
+                    })
+                    .catch(err => {
+                        toggleLoading(false)
+                        alert("error")
+                            //error in saving
+                    })
+            })
+
+            $(document).on('change', '#quantity', (e) => {
+                let quantity = $('#quantity').val();
+                let price = $('#item-price').text();
+                if (quantity < 1) {
+                    $('#quantity').val(1);
+                    $('#item-total').text(price);
+                    return
+                }
+                $('#item-total').text(quantity * price);
+            })
+
+            $(document).on('change', '#updatedQuantity', (e) => {
+                let quantity = $('#updatedQuantity').val();
+                let price = $('#item_price').text();
+                if (quantity < 1) {
+                    $('#updatedQuantity').val(1);
+                    $('#item_total').text(price);
+                    return
+                }
+                $('#item_total').text(quantity * price);
+            })
+
+
+            $(document).on('click', '.logout_btn', () => {
+                localStorage.clear();
+                location.href = "/auth/login"
+            })
+
+            // $(document).on('click', '.logout_admin', () => {
+            //     localStorage.clear();
+            //     location.href = "/auth/login"
+            // })
+
+
+            $(document).on('click', '.viewCart', () => {
+                location.href = "/api/orders/view/" + JSON.parse(localStorage.getItem('user')).profile._id
+            })
+
+            $(document).on('click', '.postUpdate', (e) => {
+
+                let payload = {
+                    size: $("#updatedSize").val(),
+                    quantity: $("#updatedQuantity").val(),
+                    id: e.target.id,
+                    total: Number($('#item_total').text()),
+                    // total: 0
+                }
+                console.log(payload)
+
+                //console.log(payload)
+                $.ajax({
+                        url: '/api/products/update',
+                        method: 'Post',
+                        data: payload,
+                    })
+                    .then(res => {
+                        // success saving
+                        $('.modal').modal('toggle');
+                        location.href = "/api/orders/view/" + JSON.parse(localStorage.getItem('user')).profile._id
+                    })
+                    .catch(err => {
+                        toggleLoading(false)
+                        alert("error")
+                            //error in saving
+                    })
+
+            })
+
+
+
+            $(document).on('click', '#addtocartbtn', () => {
+                // debugger
+                let product = $("#productId").val();
+                let color = $("#color").val();
+                let size = $("#size").val();
+                let quantity = Number($("#quantity").val());
+                let total = Number($('#item-total').text());
+                let customer = JSON.parse(localStorage.getItem('user')).profile._id
+                let payload = {
+                    product,
+                    quantity,
+                    total,
+                    customer,
+                    color,
+                    size
+                };
+                console.log(payload);
+                // toggleLoading(true)
+                // debugger
+                $.ajax({
+                        url: '/api/products/add',
+                        method: 'POST',
+                        data: payload,
+                    })
+                    .then(res => {
+                        // success saving
+                        toggleLoading(false)
+                        location.href = "/"
+                    })
+                    .catch(err => {
+                        toggleLoading(false)
+                        alert("error ")
+                            //error in saving
+                    })
+            })
+        })
+    </script>
+</body>
+
+</html>

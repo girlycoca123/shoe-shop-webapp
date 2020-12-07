@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%- title %>
+    </title>
+    <!-- CSS -->
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="/css/bootstrap/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/app.css" type="text/css">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>Sign In</h3>
+                </div>
+                <div class="card-body">
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-at"></i></span>
+                        </div>
+                        <input type="text" id="email" class="form-control" placeholder="email">
+
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" id="password" class="form-control" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn float-right login_btn">
+                            Login
+                        </button>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="0" type="checkbox" id="isAdmin">
+                        <label class="form-check-label text-white" for="defaultCheck1">
+                            Login as Admin
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center links">
+                        Don't have an account?<a href="/auth/registration">Sign Up</a>
+                    </div>
+                    <div class="d-flex justify-content-center links">
+                        <a href="#">Forgot your password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('./../includes/loading'); %>
+    </div>
+    <script src="/js/bootstrap/jquery.min.js"></script>
+    <script>
+        const toggleLoading = (show) => {
+            if (show) {
+                $(".spanner").addClass("show");
+                $(".overlay").addClass("show");
+            } else {
+
+                $(".spanner").removeClass("show");
+                $(".overlay").removeClass("show");
+            }
+        }
+        const login = (payload) => {
+            $.ajax({
+                method: 'POST',
+                url: '/api/auth/login',
+                data: payload
+            }).then(res => {
+                toggleLoading(true)
+                let {
+                    access_token,
+                    data
+                } = res;
+                localStorage.setItem("token", access_token)
+                localStorage.setItem("user", JSON.stringify(data.user))
+                if (data.user.role === "user") {
+                    location.href = "/"
+                } else {
+                    location.href = "/admin/dashboard"
+                }
+            }).catch(err => {
+                toggleLoading(false)
+                let {
+                    responseJSON
+                } = err;
+                alert(responseJSON.message)
+            })
+        }
+
+        $(document).ready(() => {
+
+            if (localStorage.getItem('token')) {
+                location.href = "/"
+            }
+            $(".login_btn").click(() => {
+                toggleLoading(true)
+                let email = $("#email").val()
+                let password = $("#password").val()
+                let isAdmin = $("#isAdmin").is(":checked")
+                login({
+                    email,
+                    password,
+                    role: isAdmin ? 'admin' : 'user'
+                })
+            })
+        })
+    </script>
+
+
+</body>
+
+</html>
